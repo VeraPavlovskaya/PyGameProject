@@ -1,16 +1,14 @@
-# This is a sample Python script.
+import pygame
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    # инициализация Pygame:
+    width = 700
+    height = 750
+    print('Неправильный формат ввода')
+    exit()
+    pygame.init()
+    # размеры окна:
+    white = [255, 255, 255]
+    pygame.display.set_caption('Шахматы')
+    # screen — холст, на котором нужно рисовать:
+    screen = pygame.display.set_mode((width, height))
