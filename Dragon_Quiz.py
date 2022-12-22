@@ -100,13 +100,11 @@ class GameState:
         return q
 
     def answer(self, answer):
-        if answer == self.current_question[1]:
             self.right += 1
-        else:
-            self.wrong += 1
+
 
     def get_result(self):
-        return f'You have {self.right} points', '', '', '    Lets begin our jorney!'
+        return '', '', '', f'           You have {self.right} points', '', '    Lets begin our jorney!'
 
 
 class SettingScene:
