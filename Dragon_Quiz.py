@@ -6,9 +6,12 @@ import sys
 
 questions = []
 
-
+my_dragon = {'Earth': {'score': 100, 'name': 'earth'},
+         'Air': {'score': 140, 'name': 'air'},
+         'Water': {'score': 210, 'name': 'water'},
+         'Fire': {'score': 280, 'name': 'fire'}}
 def load_image(name, color_key=None):
-    fullname = os.path.join(name)
+    fullname = os.path.join('images', name)
     try:
         image = pygame.image.load(fullname)
     except pygame.error as message:
@@ -28,7 +31,7 @@ class SimpleScene:
     def __init__(self, next_scene, *text):
         self.background = pygame.Surface((650, 480))
         self.background.fill(pygame.Color('lightgreen'))
-        fon = pygame.transform.scale(load_image('picture_dragons.jpg'), (650, 480))
+        fon = pygame.transform.scale(load_image('picture_dragons1.jpg'), (650, 480))
         self.background.blit(fon, (0, 0))
         y = 80
         if text:
@@ -75,19 +78,19 @@ class GameState:
     def __init__(self, difficulty):
         self.difficulty = difficulty
         self.questions = [
-            ["What is your eye color?", ["Blue", "Green", "Gray", "Brown"]],
+            ["What is your eye color?", ["Blue", "Green", "Gray", "Brown"], [10, 20, 30, 40]],
             ["What is your zodiac sign?",
              ["Sagittarius, Leo, Aries", "Taurus, Virgo, Capricorn", "Pisces, Scorpio, Cancer",
-              "Libra, Aquarius, Gemini"]],
+              "Libra, Aquarius, Gemini"], [40, 20, 30, 10]],
             ["Your friends say that you are", ["Joyful and optimistic", "Smart and ambitious", "Creative and emotional",
-                                               "peaceful and kind"]],
+                                               "peaceful and kind"], [20, 30, 10, 40]],
             ["What do you usually do in your freetime?", ["I do sports", "I prefer reading", "I sing or dance",
-                                                          "All of the above"]],
+                                                          "All of the above"], [40, 10, 30, 20]],
             ["What are your favorite school subjects?", ["I love exact sciences", "I love languages and literature",
-                                                         "PE is the best!", "I'm not sure"]],
-            ["What creatures do you like the most?", ["Pets", "Extinct animals", "Mythical creatures", "Wild animals"]],
+                                                         "PE is the best!", "I'm not sure"], [10, 20, 30, 40]],
+            ["What creatures do you like the most?", ["Pets", "Extinct animals", "Mythical creatures", "Wild animals"], [10, 20, 30, 40]],
             ["Where do you feel more comfortable?", ["I enjoy going to the mountains", "I like going the beach",
-                                                     "I feel better at the city centre", "I choose the forests"]]
+                                                     "I feel better at the city centre", "I choose the forests"], [10, 20, 30, 40]]
         ]
         self.current_question = None
         self.right = 0
@@ -99,12 +102,24 @@ class GameState:
         self.current_question = q
         return q
 
-    def answer(self, answer):
-            self.right += 1
+    def answer(self, points):
+            self.right += points
 
-
+    def get_dragon(self):
+        if 0 < self.right <= my_dragon['Earth']['score']:
+            return 'Earth dragon'
+        elif my_dragon['Earth']['score'] < self.right <= my_dragon['Air']['score']:
+            return 'Air dragon'
+        elif my_dragon['Air']['score'] < self.right <= my_dragon['Water']['score']:
+            #self.im = pygame.transform.scale(load_image('Water_dragon.png'), (80, 80))
+            return'Water dragon'
+        else:
+            return'Fire dragon'
     def get_result(self):
-        return '', '', '', f'           You have {self.right} points', '', '    Lets begin our jorney!'
+        dragon = self.get_dragon()
+        print(dragon)
+        # if dragon == 'Water dragon':
+        return '', f'{dragon}', '', f'           You have {self.right} points', '', '    Lets begin our jorney!'
 
 
 class SettingScene:
@@ -171,7 +186,7 @@ class GameScene:
         self.background = pygame.Surface((640, 1000))
         self.background.fill((23, 23, 23))
         self.gamestate = gamestate
-        question, answer = gamestate.pop_question()
+        question, answer, self.points = gamestate.pop_question()
         SimpleScene.FONT.render_to(self.background, (x0, 49), question, pygame.Color('white'))
         x = 100
         y = 150
@@ -191,15 +206,15 @@ class GameScene:
     def update(self, events, dt):
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN:
-                n = 1
-                for rect in self.rects:
+                for num, rect in enumerate(self.rects):
                     if rect.collidepoint(event.pos):
-                        self.gamestate.answer(n)
+                        self.gamestate.answer(self.points[num])
+                        print(self.points[num])
                         if self.gamestate.questions:
                             return ('GAME', self.gamestate)
                         else:
                             return ('RESULT', self.gamestate.get_result())
-                    n += 1
+
 
 
 def main():
@@ -228,7 +243,6 @@ def main():
                 scene.start(state)
 
         scene.draw(screen)
-
         pygame.display.flip()
         dt = clock.tick(60)
 
