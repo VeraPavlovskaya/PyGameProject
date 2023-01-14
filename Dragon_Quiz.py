@@ -6,10 +6,12 @@ import sys
 
 questions = []
 
-my_dragon = {'Earth': {'score': 100, 'name': 'earth'},
-         'Air': {'score': 140, 'name': 'air'},
-         'Water': {'score': 210, 'name': 'water'},
-         'Fire': {'score': 280, 'name': 'fire'}}
+my_dragon = {'Earth': {'score': 130, 'name': 'earth', 'file': 'Earth_Dragon2.jpg'},
+             'Air': {'score': 180, 'name': 'air', 'file': 'Air_Dragon.jpg'},
+             'Water': {'score': 230, 'name': 'water', 'file': 'Water_dragon.png'},
+             'Fire': {'score': 280, 'name': 'fire', 'file': 'Fire_Dragon.jpg'}}
+
+
 def load_image(name, color_key=None):
     fullname = os.path.join('images', name)
     try:
@@ -28,10 +30,11 @@ def load_image(name, color_key=None):
 
 class SimpleScene:
     FONT = None
+
     def __init__(self, next_scene, *text):
         self.background = pygame.Surface((650, 480))
         self.background.fill(pygame.Color('lightgreen'))
-        fon = pygame.transform.scale(load_image('picture_dragons1.jpg'), (650, 480))
+        fon = pygame.transform.scale(load_image('bg.jfif'), (650, 480))
         self.background.blit(fon, (0, 0))
         y = 80
         if text:
@@ -42,10 +45,11 @@ class SimpleScene:
                 i += 1
                 text_rect = SimpleScene.FONT.get_rect(line)
                 text_rect.center = self.background.get_rect().center
-                text_rect = (text_rect[0], text_rect[1] + 20 * i, text_rect[2], text_rect[3])
+                text_rect = (text_rect[0], text_rect[1] - 40 * i, text_rect[2], text_rect[3])
                 print(text_rect)
+                print(line)
                 SimpleScene.FONT.render_to(self.background, text_rect, line, pygame.Color('white'))
-                # SimpleScene.FONT.render_to(self.background, (120, y), line, pygame.Color('black'))
+                #SimpleScene.FONT.render_to(self.background, (120, y), line, pygame.Color('black'))
                 # SimpleScene.FONT.render_to(self.background, (119, y - 1), line, pygame.Color('white'))
                 y += 50
 
@@ -59,12 +63,13 @@ class SimpleScene:
 
     def draw(self, screen):
         screen.blit(self.background, (0, 0))
-        if self.additional_text:
-            y = 180
-            for line in self.additional_text:
-                SimpleScene.FONT.render_to(screen, (120, y), line, pygame.Color('black'))
-                SimpleScene.FONT.render_to(screen, (119, y - 1), line, pygame.Color('white'))
-                y += 50
+        #if self.additional_text:
+        #    print("additional_text")
+        #    y = 180
+        #    for line in self.additional_text:
+        #        SimpleScene.FONT.render_to(screen, (120, y), line, pygame.Color('black'))
+        #        SimpleScene.FONT.render_to(screen, (119, y - 1), line, pygame.Color('white'))
+        #        y += 10
 
     def update(self, events, dt):
         for event in events:
@@ -73,6 +78,63 @@ class SimpleScene:
                     return ('GAME', GameState(0))
                 return (self.next_scene, None)
 
+##########
+class FinalScene:
+    FONT = None
+
+    def __init__(self, next_scene, *text):
+        self.background = pygame.Surface((650, 480))
+        self.background.fill(pygame.Color('lightgreen'))
+        fon = pygame.transform.scale(load_image('bg.jfif'), (650, 480))
+        self.background.blit(fon, (0, 0))
+        y = 80
+        if text:
+            if FinalScene.FONT == None:
+                FinalScene.FONT = pygame.freetype.SysFont(None, 32)
+            i = 0
+            for line in text:
+                i += 1
+                text_rect = FinalScene.FONT.get_rect(line)
+                text_rect.center = self.background.get_rect().center
+                text_rect = (text_rect[0], text_rect[1] - 140 * i, text_rect[2], text_rect[3])
+                print("FinalScene:", text_rect)
+                print("FinalScene:", line)
+                FinalScene.FONT.render_to(self.background, text_rect, line, pygame.Color('white'))
+                y += 50
+
+        self.next_scene = next_scene
+        self.additional_text = None
+
+    def start(self, text):
+        self.additional_text = text
+        image_d = pygame.image.load('picture_dragons.jpg')
+        # image_d.convert(SimpleScene)
+
+    def draw(self, screen):
+        screen.blit(self.background, (0, 0))
+        if self.additional_text:
+            y = 320
+            i = 0
+            for line in self.additional_text:
+                if i==0:  # First line contains Dragon name, use it to render the picture
+                    file_name = my_dragon[line]['file']
+                    #print(file_name)
+                    line += " dragon"
+                i += 1
+                FinalScene.FONT.render_to(screen, (160, y), line, pygame.Color('black'))
+                FinalScene.FONT.render_to(screen, (159, y - 1), line, pygame.Color('white'))
+                #
+                y += 20
+            img = pygame.transform.scale(load_image(file_name), (120, 120))
+            screen.blit(img, (250, 170))
+    def update(self, events, dt):
+        for event in events:
+            if event.type == pygame.KEYDOWN:
+                if self.next_scene == 'GAME':
+                    return ('GAME', GameState(0))
+                return (self.next_scene, None)
+
+##########
 
 class GameState:
     def __init__(self, difficulty):
@@ -85,16 +147,17 @@ class GameState:
             ["Your friends say that you are", ["Joyful and optimistic", "Smart and ambitious", "Creative and emotional",
                                                "peaceful and kind"], [20, 30, 10, 40]],
             ["What do you usually do in your freetime?", ["I do sports", "I prefer reading", "I sing or dance",
-                                                          "All of the above"], [40, 10, 30, 20]],
+                                                          "All of the above"], [30, 40, 20, 10]],
             ["What are your favorite school subjects?", ["I love exact sciences", "I love languages and literature",
                                                          "PE is the best!", "I'm not sure"], [10, 20, 30, 40]],
-            ["What creatures do you like the most?", ["Pets", "Extinct animals", "Mythical creatures", "Wild animals"], [10, 20, 30, 40]],
+            ["What creatures do you like the most?", ["Pets", "Extinct animals", "Mythical creatures", "Wild animals"],
+             [10, 20, 30, 40]],
             ["Where do you feel more comfortable?", ["I enjoy going to the mountains", "I like going the beach",
-                                                     "I feel better at the city centre", "I choose the forests"], [10, 20, 30, 40]]
+                                                     "I feel better at the city centre", "I choose the forests"],
+             [10, 20, 30, 40]]
         ]
         self.current_question = None
         self.right = 0
-        self.wrong = 0
 
     def pop_question(self):
         q = random.choice(self.questions)
@@ -103,26 +166,26 @@ class GameState:
         return q
 
     def answer(self, points):
-            self.right += points
+        self.right += points
 
     def get_dragon(self):
         if 0 < self.right <= my_dragon['Earth']['score']:
-            return 'Earth dragon'
+            return 'Earth'
         elif my_dragon['Earth']['score'] < self.right <= my_dragon['Air']['score']:
-            return 'Air dragon'
+            return 'Air'
         elif my_dragon['Air']['score'] < self.right <= my_dragon['Water']['score']:
-            #self.im = pygame.transform.scale(load_image('Water_dragon.png'), (80, 80))
-            return'Water dragon'
+            return 'Water'
         else:
-            return'Fire dragon'
+            return 'Fire'
+
     def get_result(self):
         dragon = self.get_dragon()
         print(dragon)
         # if dragon == 'Water dragon':
-        return '', f'{dragon}', '', f'           You have {self.right} points', '', '    Lets begin our jorney!'
+        return f'{dragon}', '', f'You have {self.right} points', '', 'Lets begin our jorney!'
 
 
-class SettingScene:
+'''class SettingScene:
 
     def __init__(self):
         self.background = pygame.Surface((640, 480))
@@ -130,8 +193,6 @@ class SettingScene:
 
         if SimpleScene.FONT == None:
             SimpleScene.FONT = pygame.freetype.SysFont(None, 32)
-
-
 
         self.rects = []
         x = 120
@@ -162,7 +223,7 @@ class SettingScene:
                 for rect in self.rects:
                     if rect.collidepoint(event.pos):
                         return ('GAME', GameState(n))
-                    n += 1
+                    n += 1'''
 
 
 class GameScene:
@@ -216,17 +277,16 @@ class GameScene:
                             return ('RESULT', self.gamestate.get_result())
 
 
-
 def main():
     pygame.init()
     screen = pygame.display.set_mode((640, 480))
     clock = pygame.time.Clock()
     dt = 0
     scenes = {
-        'TITLE': SimpleScene('GAME', '', '', '', '', '', '', 'Welcome to the Dragon Land!', '', 'press any button to start the quiz'),
+        'TITLE': SimpleScene('GAME', 'Press any button to start the quiz', 'Welcome to the Dragon Land!'),
         # 'SETTING': SettingScene(),
         'GAME': GameScene(),
-        'RESULT': SimpleScene('TITLE', 'Here is your result:'),
+        'RESULT': FinalScene('TITLE', 'Here is your result:'),
     }
     scene = scenes['TITLE']
     while True:
@@ -249,4 +309,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

@@ -18,6 +18,20 @@ def load_image(name, color_key=None):
         image = image.convert_alpha()
     return image
 
+events = []
+rects = []
+
+
+
+for event in events:
+    if event.type == pygame.MOUSEBUTTONDOWN:
+        n = 1
+        for rect in rects:
+            if rect.collidepoint(event.pos):
+                print(f'Clicked on {event}')
+            n += 1
+
+
 if __name__ == '__main__':
     # инициализация Pygame:
     try:
@@ -43,7 +57,6 @@ if __name__ == '__main__':
         dragon_collaction = pygame.transform.scale(load_image('dragon_collaction.png'), (80, 80))
         choose_level = pygame.transform.scale(load_image('select_level.crdownload'), (180, 60))
         instructions = pygame.transform.scale(load_image('instructions.jfif'), (50, 50))
-
 
         font1 = pygame.font.SysFont('freesanbold.ttf', 30)
         text1 = font1.render('My Profile', True, (0, 0, 0))
@@ -71,5 +84,3 @@ if __name__ == '__main__':
                 run = False
             # завершение работы:
             pygame.quit()
-
-
