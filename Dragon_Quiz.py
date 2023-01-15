@@ -10,7 +10,7 @@ my_dragon = {'Earth': {'score': 130, 'name': 'earth', 'file': 'Earth_Dragon2.jpg
              'Air': {'score': 180, 'name': 'air', 'file': 'Air_Dragon.jpg'},
              'Water': {'score': 230, 'name': 'water', 'file': 'Water_dragon.png'},
              'Fire': {'score': 280, 'name': 'fire', 'file': 'Fire_Dragon.jpg'}}
-
+my_dragon_list = ['Earth_Dragon2.jpg', 'Air_Dragon.jpg', 'Water_dragon.png', 'Fire_Dragon.jpg']
 
 def load_image(name, color_key=None):
     fullname = os.path.join('images', name)
@@ -49,7 +49,7 @@ class SimpleScene:
                 print(text_rect)
                 print(line)
                 SimpleScene.FONT.render_to(self.background, text_rect, line, pygame.Color('white'))
-                #SimpleScene.FONT.render_to(self.background, (120, y), line, pygame.Color('black'))
+                # SimpleScene.FONT.render_to(self.background, (120, y), line, pygame.Color('black'))
                 # SimpleScene.FONT.render_to(self.background, (119, y - 1), line, pygame.Color('white'))
                 y += 50
 
@@ -63,7 +63,7 @@ class SimpleScene:
 
     def draw(self, screen):
         screen.blit(self.background, (0, 0))
-        #if self.additional_text:
+        # if self.additional_text:
         #    print("additional_text")
         #    y = 180
         #    for line in self.additional_text:
@@ -77,6 +77,7 @@ class SimpleScene:
                 if self.next_scene == 'GAME':
                     return ('GAME', GameState(0))
                 return (self.next_scene, None)
+
 
 ##########
 class FinalScene:
@@ -116,17 +117,15 @@ class FinalScene:
             y = 320
             i = 0
             for line in self.additional_text:
-                if i==0:  # First line contains Dragon name, use it to render the picture
-                    file_name = my_dragon[line]['file']
-                    #print(file_name)
-                    line += " dragon"
                 i += 1
                 FinalScene.FONT.render_to(screen, (160, y), line, pygame.Color('black'))
                 FinalScene.FONT.render_to(screen, (159, y - 1), line, pygame.Color('white'))
                 #
                 y += 20
+            file_name = my_dragon[GameState.DRAGON]['file']
             img = pygame.transform.scale(load_image(file_name), (120, 120))
             screen.blit(img, (250, 170))
+
     def update(self, events, dt):
         for event in events:
             if event.type == pygame.KEYDOWN:
@@ -134,9 +133,11 @@ class FinalScene:
                     return ('GAME', GameState(0))
                 return (self.next_scene, None)
 
+
 ##########
 
 class GameState:
+    DRAGON = 'Air'
     def __init__(self, difficulty):
         self.difficulty = difficulty
         self.questions = [
@@ -170,19 +171,23 @@ class GameState:
 
     def get_dragon(self):
         if 0 < self.right <= my_dragon['Earth']['score']:
+            GameState.DRAGON = 'Earth'
             return 'Earth'
         elif my_dragon['Earth']['score'] < self.right <= my_dragon['Air']['score']:
+            GameState.DRAGON = 'Air'
             return 'Air'
         elif my_dragon['Air']['score'] < self.right <= my_dragon['Water']['score']:
+            GameState.DRAGON = 'Water'
             return 'Water'
         else:
+            GameState.DRAGON = 'Fire'
             return 'Fire'
 
     def get_result(self):
         dragon = self.get_dragon()
         print(dragon)
         # if dragon == 'Water dragon':
-        return f'{dragon}', '', f'You have {self.right} points', '', 'Lets begin our jorney!'
+        return f'{dragon} dragon', '', f'You have {self.right} points', '', 'Press any key to start!'
 
 
 '''class SettingScene:
@@ -292,7 +297,8 @@ def main():
     while True:
         events = pygame.event.get()
         for e in events:
-            if e.type == pygame.QUIT:
+            if (e.type == pygame.QUIT
+               or (e.type in [pygame.MOUSEBUTTONDOWN, pygame.KEYDOWN] and scene == scenes['RESULT'])):
                 return
 
         result = scene.update(events, dt)

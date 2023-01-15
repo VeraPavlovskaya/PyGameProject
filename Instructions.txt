@@ -1,4 +1,4 @@
-Game instructions.
+Game instructions:
 
 Dragon power is a two-player game.
 Player1 uses "A", "D", "W", "S"
@@ -9,7 +9,7 @@ and player2 uses "Left mouse button".
 You can use dragon rings to buy different dragons.
 
 Game creators:
-Vera Pavlovskaya, Molchanov Stepan
+Stepan Molchanov, Vera Pavlovskaya
 
 Our project on Github:
 https://github.com/VeraPavlovskaya/PyGameProject.git
