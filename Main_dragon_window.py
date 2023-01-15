@@ -53,6 +53,9 @@ if __name__ == '__main__':
         instructions = pygame.transform.scale(load_image('instructions.jfif'), (50, 50))
         play_btn = pygame.transform.scale(load_image('PlayBtn.png'), (200, 80))
         quit_btn = pygame.transform.scale(load_image('QuitBtn.png'), (200, 80))
+        winter_level = pygame.transform.scale(load_image('winter_level.png'), (80, 80))
+        summer_level = pygame.transform.scale(load_image('summer_level.jpg'), (80, 80))
+        sea_level = pygame.transform.scale(load_image('Sea_level.png'), (80, 80))
         ### my_dragon_pic = pygame.transform.scale(load_image(filename), (50, 50))
 
         font1 = pygame.font.SysFont('freesanbold.ttf', 30)
@@ -73,7 +76,7 @@ if __name__ == '__main__':
         store_area = pygame.Surface(area_size)
         instructions_area = pygame.Surface(area_size)
         dragon_collaction_area = pygame.Surface(area_size)
-        choose_level_area =  pygame.Surface(area_size)
+        choose_level_area = pygame.Surface(area_size)
 
         #
 
@@ -96,6 +99,8 @@ if __name__ == '__main__':
         d_c_y = 200
         choose_level_x = 250
         choose_level_y = 400
+        winter_x = 40
+        winter_y = 30
 
         screen.blit(store, (store_x, store_y))
         screen.blit(profie, (profile_x, profile_y))
@@ -116,9 +121,9 @@ if __name__ == '__main__':
         while run:
             #
             screen.blit(coin, (330, 20))
-            screen.blit(play_btn, (450, 390))
             screen.blit(text1, textRect1)
             screen.blit(text2, textRect2)
+            screen.blit(play_btn, (450, 390))
             #
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -164,12 +169,20 @@ if __name__ == '__main__':
                             instructions_area.blit(text, (5, 5 + text.get_rect().height*i))
                             i += 1
                         screen.blit(instructions_area, (AREA_LEFT, AREA_TOP))
+
                     if choose_level.get_rect().collidepoint(x - choose_level_x, y - choose_level_y):
                         title = font1.render('Select level to continue', True, (110, 52, 1))
                         title_height = title.get_rect().height
                         choose_level_area.blit(title, (5, 5))
-                        screen.blit(choose_level_area, (AREA_LEFT, AREA_TOP))
+                        choose_level_area.blit(winter_level, (winter_x, winter_y))
+                        choose_level_area.blit(summer_level, (winter_x + 120, winter_y))
+                        choose_level_area.blit(sea_level, (winter_x + 240, 30))
+                        print(choose_level_x - winter_x, choose_level_y - winter_y)
 
+                        if winter_level.get_rect().collidepoint(AREA_WIDTH - winter_x, AREA_TOP - winter_y):
+                            ###
+                            print('bliting')
+                        screen.blit(choose_level_area, (AREA_LEFT, AREA_TOP))
                     if quit_btn.get_rect().collidepoint(x - quit_btn_x, y - quit_btn_y):
                         run = False
             #
