@@ -5,7 +5,7 @@ import pygame as pg
 import Main_dragon_window
 
 FPS = 60
-SPEED = 5   # Максимально плавное движение драконов
+SPEED = 5  # Максимально плавное движение драконов
 pg.init()
 pg.display.set_caption('Dragon Power')
 pg.key.set_repeat(1, 1)
@@ -24,7 +24,6 @@ tiles_group = pg.sprite.Group()
 wall_group = pg.sprite.Group()
 balls_group = pg.sprite.Group()
 tile_images = {}
-
 
 # Instantiate mixer
 mixer.init()
@@ -258,7 +257,6 @@ class Dragon(pg.sprite.Sprite):
         # pg.display.update()
         # sc.blit(im, (x // 2, y // 2))
 
-
         mixer.music.stop()
         # self.mask.blit(dragon_fight, (x, y))
 
@@ -368,6 +366,7 @@ def main(level_num):
         clock.tick(FPS)
     # pg.quit()
     return 100
+
 
 if __name__ == '__main__':
     main(2)
