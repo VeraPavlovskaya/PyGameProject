@@ -143,6 +143,7 @@ class FinalScene:
 
 class GameState:
     DRAGON = 'Air'
+
     def __init__(self, difficulty):
         self.difficulty = difficulty
         self.questions = [
@@ -193,47 +194,6 @@ class GameState:
         print(dragon)
         # if dragon == 'Water dragon':
         return f'{dragon} dragon', '', f'You have {self.right} points', '', 'Press any key to start!'
-
-
-'''class SettingScene:
-
-    def __init__(self):
-        self.background = pygame.Surface((640, 480))
-        self.background.fill(pygame.Color('lightgreen'))
-
-        if SimpleScene.FONT == None:
-            SimpleScene.FONT = pygame.freetype.SysFont(None, 32)
-
-        self.rects = []
-        x = 120
-        y = 120
-        for n in range(4):
-            rect = pygame.Rect(x, y, 20000, 80)
-            self.rects.append(rect)
-            y += 100
-
-    def start(self, *args):
-        pass
-
-    def draw(self, screen):
-        screen.blit(self.background, (0, 0))
-        n = 1
-        for rect in self.rects:
-            if rect.collidepoint(pygame.mouse.get_pos()):
-                pygame.draw.rect(screen, pygame.Color('darkgrey'), rect)
-            pygame.draw.rect(screen, pygame.Color('blue'), rect, 5)
-            SimpleScene.FONT.render_to(screen, (rect.x + 30, rect.y + 30), str(n), pygame.Color('black'))
-            SimpleScene.FONT.render_to(screen, (rect.x + 29, rect.y + 29), str(n), pygame.Color('white'))
-            n += 1
-
-    def update(self, events, dt):
-        for event in events:
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                n = 1
-                for rect in self.rects:
-                    if rect.collidepoint(event.pos):
-                        return ('GAME', GameState(n))
-                    n += 1'''
 
 
 class GameScene:
@@ -303,7 +263,7 @@ def main():
         events = pygame.event.get()
         for e in events:
             if (e.type == pygame.QUIT
-               or (e.type in [pygame.MOUSEBUTTONDOWN, pygame.KEYDOWN] and scene == scenes['RESULT'])):
+                    or (e.type in [pygame.MOUSEBUTTONDOWN, pygame.KEYDOWN] and scene == scenes['RESULT'])):
                 return
 
         result = scene.update(events, dt)
