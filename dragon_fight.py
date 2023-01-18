@@ -308,7 +308,3 @@ def main(level_num):
         draw_bar((670, 20), pg.Color('blue'), player2.get_hp(), 2)
         pg.display.flip()
         clock.tick(FPS)
-
-
-if __name__ == '__main__':
-    main(2)
