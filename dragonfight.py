@@ -2,17 +2,20 @@ import os
 import sys
 from pygame import mixer
 import pygame as pg
+import Main_dragon_window
 
 FPS = 60
 SPEED = 5   # Максимально плавное движение драконов
 pg.init()
 pg.display.set_caption('Dragon Power')
 pg.key.set_repeat(1, 1)
-sc = pg.display.set_mode((800, 480))
-width_level = 400
-height_level = 225
-x = 200
-y = 200
+screen_width = 800
+screen_height = 480
+sc = pg.display.set_mode((screen_width, screen_height))
+width_level = 700
+height_level = 350
+x = 50
+y = 50
 dragon_fight = pg.Surface((width_level, height_level))
 clock = pg.time.Clock()
 all_sprites = pg.sprite.Group()
@@ -291,7 +294,8 @@ def main(level_num):
     else:
         raise SystemExit('')
     player1, player2 = generate_level(load_level(level))
-    while True:
+    flag = True
+    while flag:
         dx1 = dy1 = dx2 = dy2 = 0
         for event in pg.event.get():
             if event.type == pg.QUIT:
@@ -333,6 +337,31 @@ def main(level_num):
             balls_group.update()
         draw_bar((30, 20), pg.Color('red'), player1.get_hp(), 1)
         draw_bar((670, 20), pg.Color('blue'), player2.get_hp(), 2)
+        if player1.get_hp() == 0 and not (player2.get_hp() == 0):
+            rect = pg.Rect(x, y, width_level, height_level)
+            pg.draw.rect(sc, pg.Color('lightblue'), rect)
+            text_font = pg.font.SysFont('freesanbold.ttf', 45)
+            text1 = text_font.render('Player2 won!', True, (230, 0, 0))
+            text2 = text_font.render('Press any key to go to the main menu', True, (230, 0, 0))
+            text3 = text_font.render('Play again!', True, (230, 0, 250))
+            sc.blit(text2, ((screen_width - width_level) // 2 + 75, screen_height - height_level + 200))
+            sc.blit(text1, (screen_width // 2 - 100, screen_height - height_level - 50))
+            sc.blit(text3, (screen_width // 2 - 80, screen_height - height_level + 80))
+
+            # print('Player2 won!')
+        elif player2.get_hp() == 0 and not (player1.get_hp() == 0):
+            rect = pg.Rect(x, y, width_level, height_level)
+            pg.draw.rect(sc, pg.Color('lightblue'), rect)
+            text_font = pg.font.SysFont('freesanbold.ttf', 45)
+            text1 = text_font.render('Player1 won!', True, (0, 0, 250))
+            text2 = text_font.render('Press any key to go to the main menu', True, (0, 0, 250))
+            text3 = text_font.render('+100 Dragon rings', True, (230, 0, 250))
+            # CURRENT_COINS += 50
+            sc.blit(text3, (screen_width // 2 - 140, screen_height - height_level + 80))
+            sc.blit(text2, ((screen_width - width_level) // 2 + 75, screen_height - height_level + 200))
+            sc.blit(text1, (screen_width // 2 - 100, screen_height - height_level - 50))
+
+            # print('Player1 won!')
         pg.display.flip()
         clock.tick(FPS)
 

@@ -4,7 +4,6 @@ from Dragon_Quiz import GameState
 import pygame
 import dragonfight
 
-
 def load_image(name, color_key=None):
     fullname = os.path.join('images', name)
     try:
@@ -44,7 +43,7 @@ if __name__ == '__main__':
 
     # инициализация Pygame:
     try:
-        width, height = 800, 480
+        width, height = 650, 480
     except ValueError:
         print('Неправильный формат ввода')
         exit()
@@ -62,7 +61,7 @@ if __name__ == '__main__':
         fon = pygame.transform.scale(load_image('bg2.jpg'), (width, height))
         store = pygame.transform.scale(load_image('store.png'), (80, 80))
         profie = pygame.transform.scale(load_image('profile2.png'), (80, 80))
-        coin = pygame.transform.scale(load_image('coins.png'), (50, 50))
+        coin = pygame.transform.scale(load_image('coins.png'), (100, 65))
         dragon_collaction = pygame.transform.scale(load_image('dragon_collaction.png'), (80, 80))
         choose_level = pygame.transform.scale(load_image('select_level.crdownload'), (180, 60))
         instructions = pygame.transform.scale(load_image('instructions.jfif'), (50, 50))
@@ -87,10 +86,10 @@ if __name__ == '__main__':
 
         screen.blit(fon, (0, 0))
         #
-        AREA_WIDTH = 470
-        AREA_HEIGHT = 300
-        AREA_LEFT = 170
-        AREA_TOP = 85
+        AREA_WIDTH = 430
+        AREA_HEIGHT = 320
+        AREA_LEFT = 130
+        AREA_TOP = 75
         IMG_WIDTH = IMG_HEIGHT = 60
         area_size = (AREA_WIDTH, AREA_HEIGHT)
         #
@@ -114,18 +113,18 @@ if __name__ == '__main__':
         store_y = 250
         profile_x = 30
         profile_y = 70
-        instructions_x = 700
+        instructions_x = 570
         instructions_y = 50
-        play_btn_x = 565
-        play_btn_y = 400
-        quit_btn_x = 70
-        quit_btn_y = 400
+        quit_btn_x = 0
+        quit_btn_y = 390
         d_c_x = 30
         d_c_y = 200
-        choose_level_x = 330
-        choose_level_y = 395
-        winter_x = 40
-        winter_y = 30
+        choose_level_x = 250
+        choose_level_y = 400
+        winter_x = 50
+        winter_y = 100
+        play_btn_x = 450
+        play_btn_y = 390
 
         screen.blit(store, (store_x, store_y))
         screen.blit(profie, (profile_x, profile_y))
@@ -138,17 +137,17 @@ if __name__ == '__main__':
         textRect1 = text1.get_rect()
         textRect2 = text2.get_rect()
         textRect1.center = (70, 160)
-        textRect2.center = (390, 50)
+        textRect2.center = (250, 43)
         #
         fps = 60
         clock = pygame.time.Clock()
         run = True
         while run:
             #
-            screen.blit(coin, (width//2 + 60, 20))
+            screen.blit(coin, (330, 5))
             screen.blit(text1, textRect1)
             screen.blit(text2, textRect2)
-            screen.blit(play_btn, (play_btn_x, play_btn_y))
+            screen.blit(play_btn, (450, 390))
             #
             coins_text = font1.render(str(CURRENT_COINS), True, (0, 0, 0))
             coins_rect = coins_text.get_rect()
