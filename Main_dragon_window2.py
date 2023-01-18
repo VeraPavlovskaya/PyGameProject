@@ -4,6 +4,25 @@ from Dragon_Quiz import GameState
 import pygame
 import dragonfight
 
+
+def draw_new_coins():
+    coins_text = font1.render(str(CURRENT_COINS), True, (0, 0, 0))
+    coins_rect = coins_text.get_rect()
+    # pygame.draw.rect(store_area, pygame.Color('lightblue'), bckgr_rect)
+    coins_rect.center = (334 + coin.get_rect().width // 2, 12 + coin.get_rect().height // 2)
+    screen.blit(coins_text, coins_rect)
+
+
+def hide_old_coins():
+    cr_x = 360
+    cr_y = 34
+    cr_w = 50
+    cr_h = 20
+    fon_color = fon.get_at((cr_x, cr_y))
+    bckgr_rect = pygame.Rect(cr_x, cr_y, cr_w, cr_h)
+    pygame.draw.rect(screen, fon_color, bckgr_rect)  # To Hide old coins value
+
+
 def load_image(name, color_key=None):
     fullname = os.path.join('images', name)
     try:
@@ -127,7 +146,7 @@ if __name__ == '__main__':
         for i in range(len(Dragon_Quiz.my_dragon_list)):
             if Dragon_Quiz.my_dragon_list[i]["name"] == GameState.DRAGON:
                 SELECTED_DRAGON = i
-        CURRENT_COINS = 0
+        CURRENT_COINS = 1500
         ### my_dragon_pic = pygame.transform.scale(load_image(filename), (50, 50))
 
         font1 = pygame.font.SysFont('freesanbold.ttf', 30)
@@ -136,13 +155,8 @@ if __name__ == '__main__':
         text2 = font1.render('Dragon rings:', True, (0, 0, 0))
 
         screen.blit(fon, (0, 0))
-        cr_x = 360
-        cr_y = 34
-        cr_w = 50
-        cr_h = 20
-        fon_color = fon.get_at((cr_x, cr_y))
-        bckgr_rect = pygame.Rect(cr_x, cr_y, cr_w, cr_h)
-        pygame.draw.rect(screen, fon_color, bckgr_rect)  # To Hide old coins value
+        hide_old_coins()
+        ##-----------------------------------------------------------------
         #
         AREA_WIDTH = 430
         AREA_HEIGHT = 320
@@ -184,12 +198,6 @@ if __name__ == '__main__':
         play_btn_x = 450
         play_btn_y = 390
 
-        screen.blit(store, (store_x, store_y))
-        screen.blit(profie, (profile_x, profile_y))
-        screen.blit(instructions, (instructions_x, instructions_y))
-        screen.blit(dragon_collaction, (d_c_x, d_c_y))
-        screen.blit(choose_level, (choose_level_x, choose_level_y))
-        screen.blit(quit_btn, (quit_btn_x, quit_btn_y))
         #
 
         textRect1 = text1.get_rect()
@@ -202,6 +210,13 @@ if __name__ == '__main__':
         run = True
         while run:
             #
+            # screen.blit(fon, (0, 0))
+            screen.blit(store, (store_x, store_y))
+            screen.blit(profie, (profile_x, profile_y))
+            screen.blit(instructions, (instructions_x, instructions_y))
+            screen.blit(dragon_collaction, (d_c_x, d_c_y))
+            screen.blit(choose_level, (choose_level_x, choose_level_y))
+            screen.blit(quit_btn, (quit_btn_x, quit_btn_y))
             screen.blit(coin, (330, 5))
             screen.blit(text1, textRect1)
             screen.blit(text2, textRect2)
@@ -273,21 +288,13 @@ if __name__ == '__main__':
                                     msg = font2.render(SELECTED_DRAGON_NAME + ' purchased', True, (0, 0, 0))
                                     Dragon_Quiz.my_dragon_list[SELECTED_DRAGON]["active"] = "Y"
                                     # Hide current coins value
-                                    cr_x = 360
-                                    cr_y = 34
-                                    cr_w = 50
-                                    cr_h = 20
-                                    fon_color = fon.get_at((cr_x, cr_y))
-                                    bckgr_rect = pygame.Rect(cr_x, cr_y, cr_w, cr_h)  # Hide old message
-                                    pygame.draw.rect(screen, fon_color, bckgr_rect)
+                                    hide_old_coins()
+
                                     # Draw new coins value
                                     CURRENT_COINS = CURRENT_COINS - Dragon_Quiz.my_dragon_list[SELECTED_DRAGON]["price"]
                                     print(CURRENT_COINS)
-                                    coins_text = font1.render(str(CURRENT_COINS), True, (0, 0, 0))
-                                    coins_rect = coins_text.get_rect()
-                                    pygame.draw.rect(store_area, pygame.Color('lightblue'), bckgr_rect)
-                                    coins_rect.center = (334 + coin.get_rect().width // 2, 12 + coin.get_rect().height // 2)
-                                    screen.blit(coins_text, coins_rect)
+                                    draw_new_coins()
+                                    ##-----------------------------------------
                                 else:
                                     msg = font2.render('Not enough coins to buy ' + SELECTED_DRAGON_NAME, True, (0, 0, 0))
                                 msg_h = msg.get_rect().height
@@ -337,7 +344,10 @@ if __name__ == '__main__':
                                     ACTIVE_LEVEL = i
                             draw_levels()
                     if play_btn.get_rect().collidepoint(x - play_btn_x, y - play_btn_y):
-                        dragonfight.main(1)
+                        bonus = dragonfight.main(1)
+                        if bonus == None:
+                             bonus = 100
+                        CURRENT_COINS += bonus
                     if quit_btn.get_rect().collidepoint(x - quit_btn_x, y - quit_btn_y):
                         inLevel = False
                         inStore = False

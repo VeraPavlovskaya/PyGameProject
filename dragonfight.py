@@ -343,10 +343,11 @@ def main(level_num):
             text_font = pg.font.SysFont('freesanbold.ttf', 45)
             text1 = text_font.render('Player2 won!', True, (230, 0, 0))
             text2 = text_font.render('Press any key to go to the main menu', True, (230, 0, 0))
-            text3 = text_font.render('Play again!', True, (230, 0, 250))
+            text3 = text_font.render('+100 Dragon rings', True, (230, 0, 250))
             sc.blit(text2, ((screen_width - width_level) // 2 + 75, screen_height - height_level + 200))
             sc.blit(text1, (screen_width // 2 - 100, screen_height - height_level - 50))
             sc.blit(text3, (screen_width // 2 - 80, screen_height - height_level + 80))
+            flag = False
 
             # print('Player2 won!')
         elif player2.get_hp() == 0 and not (player1.get_hp() == 0):
@@ -360,11 +361,13 @@ def main(level_num):
             sc.blit(text3, (screen_width // 2 - 140, screen_height - height_level + 80))
             sc.blit(text2, ((screen_width - width_level) // 2 + 75, screen_height - height_level + 200))
             sc.blit(text1, (screen_width // 2 - 100, screen_height - height_level - 50))
+            flag = False
 
             # print('Player1 won!')
         pg.display.flip()
         clock.tick(FPS)
-
+    # pg.quit()
+    return 100
 
 if __name__ == '__main__':
     main(2)

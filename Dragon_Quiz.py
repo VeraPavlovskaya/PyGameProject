@@ -16,6 +16,7 @@ my_dragon_list = [{"name": "Earth", "file": 'earth_Dragon.png', "image": None, "
                   {"name": "Water", "file": 'Water_dragon.png', "image": None, "price": 0, "active": "Y"}
                   ]
 
+
 def load_image(name, color_key=None):
     fullname = os.path.join('images', name)
     try:
