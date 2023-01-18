@@ -344,7 +344,8 @@ if __name__ == '__main__':
                                     ACTIVE_LEVEL = i
                             draw_levels()
                     if play_btn.get_rect().collidepoint(x - play_btn_x, y - play_btn_y):
-                        bonus = dragonfight.main(1)
+                        bonus = dragonfight.main(ACTIVE_LEVEL + 1)
+                        screen.blit(fon, (0, 0))
                         if bonus == None:
                              bonus = 100
                         CURRENT_COINS += bonus

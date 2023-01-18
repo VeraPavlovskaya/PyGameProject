@@ -350,7 +350,7 @@ def main(level_num):
             flag = False
 
             # print('Player2 won!')
-        elif player2.get_hp() == 0 and not (player1.get_hp() == 0):
+        if player2.get_hp() == 0 and not (player1.get_hp() == 0):
             rect = pg.Rect(x, y, width_level, height_level)
             pg.draw.rect(sc, pg.Color('lightblue'), rect)
             text_font = pg.font.SysFont('freesanbold.ttf', 45)
