@@ -1,4 +1,6 @@
-1. Project Name. Dragon Power
+1. Project Name. Dragon Power. 
+   Link to the project on github https://github.com/VeraPavlovskaya/PyGameProject
+   Number of lines in code: around 1010
 
 2. Project Developers: Молчанов Степан Андреевич, Павловская Вера Александровна
 
