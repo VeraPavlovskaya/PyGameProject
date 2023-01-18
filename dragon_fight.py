@@ -1,13 +1,26 @@
 import os
+import random
 import sys
 import pygame as pg
 
 FPS = 60
-SPEED = 5   # Максимально плавное движение драконов
+SPEED = 5
 pg.init()
 pg.display.set_caption('Dragon Power')
 pg.key.set_repeat(1, 1)
+<<<<<<< HEAD
 sc = pg.display.set_mode((800, 450))
+=======
+screen_width = 640
+screen_height = 480
+sc = pg.display.set_mode((screen_width, screen_height))
+width_level = 580
+height_level = 390
+dragon_id = 0
+x = 30
+y = 30
+dragon_fight = pg.Surface((width_level, height_level))
+>>>>>>> 75fe536 (up)
 clock = pg.time.Clock()
 all_sprites = pg.sprite.Group()
 players_group = pg.sprite.Group()
@@ -38,7 +51,7 @@ def load_image(name, color_key=None):
     return image
 
 
-TILE_WIDTH = TILE_HEIGHT = 50
+TILE_WIDTH = TILE_HEIGHT = 40
 DRAGON_WIDTH = DRAGON_HEIGHT = 100
 
 
@@ -98,7 +111,6 @@ class Ball(pg.sprite.Sprite):
 
 
 def generate_level(level):
-    player1, player2, x, y = None, None, None, None
     coords1 = coords2 = 0, 0
     for y in range(len(level)):
         for x in range(len(level[y])):
@@ -113,28 +125,28 @@ def generate_level(level):
             elif level[y][x] == '#':
                 Tile('wall', x, y)
     coords1, coords2 = sorted((coords1, coords2), key=lambda tpl: tpl[0])
-    player1 = Dragon(3, *coords1, 'left')
-    player2 = Dragon(3, *coords2, 'right')
+    player1 = Dragon(dragon_id, *coords1, 'left')
+    player2 = Dragon(random.randint(1, 4), *coords2, 'right')
     player1.set_enemy(player2)
     player2.set_enemy(player1)
     return player1, player2
 
 
 class Dragon(pg.sprite.Sprite):
-    def __init__(self, dragon_id, x, y, dir_):
+    def __init__(self, dragon_id_, x, y, dir_):
         super().__init__(all_sprites, players_group)
         self.enemy = None
-        self.dragon_id = dragon_id
-        if dragon_id == 1:
+        self.dragon_id = dragon_id_
+        if dragon_id_ == 1:
             pic = air_dragon
             self.hp = self.max_hp = 700
-        elif dragon_id == 2:
+        elif dragon_id_ == 2:
             pic = earth_dragon
             self.hp = self.max_hp = 1200
-        elif dragon_id == 3:
+        elif dragon_id_ == 3:
             pic = fire_dragon
             self.hp = self.max_hp = 1000
-        elif dragon_id == 4:
+        elif dragon_id_ == 4:
             pic = water_dragon
             self.hp = self.max_hp = 900
         else:
@@ -232,6 +244,50 @@ class Dragon(pg.sprite.Sprite):
     def die(self):
         self.hp = 0
         self.kill()
+<<<<<<< HEAD
+=======
+        # winner =
+        # rect = pg.Rect(x, y, width_level, height_level)
+        # pg.draw.rect(sc, pg.Color('lightblue'), rect)
+        # pg.mask.from_surface(rect)
+        # self.mask = pg.mask.from_surface(self.image)
+        # pg.draw.rect(sc, pg.Color('lightblue'), rect)
+        # pg.display.update()
+        # sc.blit(im, (x // 2, y // 2))
+        mixer.music.stop()
+        # self.mask.blit(dragon_fight, (x, y))
+>>>>>>> 75fe536 (up)
+
+
+def endscreen(player1, player2):
+    if player1.get_hp() == 0 and not (player2.get_hp() == 0):
+        rect = pg.Rect(x, y, width_level, height_level)
+        pg.draw.rect(sc, pg.Color('lightblue'), rect)
+        text_font = pg.font.SysFont('freesanbold.ttf', 45)
+        text1 = text_font.render('Player2 won!', True, (230, 0, 0))
+        text2 = text_font.render('Press any key to go to the main menu', True, (230, 0, 0))
+        text3 = text_font.render('+100 Dragon rings', True, (230, 0, 250))
+
+        # print('Player2 won!')
+    elif player2.get_hp() == 0 and not (player1.get_hp() == 0):
+        rect = pg.Rect(x, y, width_level, height_level)
+        pg.draw.rect(sc, pg.Color('lightblue'), rect)
+        text_font = pg.font.SysFont('freesanbold.ttf', 45)
+        text1 = text_font.render('Player1 won!', True, (0, 0, 250))
+        text2 = text_font.render('Press any key to go to the main menu', True, (0, 0, 250))
+        text3 = text_font.render('+100 Dragon rings', True, (230, 0, 250))
+        # CURRENT_COINS += 50
+    else:
+        raise SystemExit('Ложный вызов функции endscreen')
+    sc.blit(text3, (screen_width // 2 - 140, screen_height - height_level + 80))
+    sc.blit(text2, ((screen_width - width_level) // 2 + 18, screen_height - height_level + 200))
+    sc.blit(text1, (screen_width // 2 - 90, screen_height - height_level - 50))
+    pg.display.flip()
+    flag = True
+    while flag:
+        for event in pg.event.get():
+            if event.type == pg.KEYDOWN:
+                flag = False
 
 
 air_dragon = load_image('air_dragon.png')
@@ -241,7 +297,15 @@ water_dragon = load_image('water_dragon.png')
 fireball = load_image('fireball.png')
 
 
+<<<<<<< HEAD
 def main(level_num):
+=======
+def main(level_num, dragon_id_):
+    global dragon_id
+    dragon_id = dragon_id_
+    print(dragon_id)
+    mixer.music.play()
+>>>>>>> 75fe536 (up)
     global tile_images
     if level_num == 1:
         level = 'map1.txt'
@@ -264,7 +328,13 @@ def main(level_num):
     else:
         raise SystemExit('')
     player1, player2 = generate_level(load_level(level))
+<<<<<<< HEAD
     while True:
+=======
+    flag = True
+    while flag:
+        sc.fill((0, 0, 0))
+>>>>>>> 75fe536 (up)
         dx1 = dy1 = dx2 = dy2 = 0
         for event in pg.event.get():
             if event.type == pg.QUIT:
@@ -305,6 +375,17 @@ def main(level_num):
         if balls_group.sprites():
             balls_group.update()
         draw_bar((30, 20), pg.Color('red'), player1.get_hp(), 1)
+<<<<<<< HEAD
         draw_bar((670, 20), pg.Color('blue'), player2.get_hp(), 2)
         pg.display.flip()
         clock.tick(FPS)
+=======
+        draw_bar((510, 20), pg.Color('blue'), player2.get_hp(), 2)
+        if player1.get_hp() == 0 or player2.get_hp() == 0:
+            break
+        pg.display.flip()
+        clock.tick(FPS)
+    endscreen(player1, player2)
+    player1 = player2 = None
+    return 100
+>>>>>>> 75fe536 (up)

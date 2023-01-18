@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # В питоне файлы именуются как функции, маленькими латинскими буквами через нижнее подчёркивание!
 import pygame
 import random
@@ -6,6 +7,31 @@ import os
 
 questions = []
 
+=======
+import os
+import random
+import sys
+import pygame
+import dragon_fight
+
+pygame.init()
+screen = pygame.display.set_mode((640, 480))
+clock = pygame.time.Clock()
+dragon_id = 0
+
+questions = []
+
+my_dragon = {'Earth': {'score': 130, 'name': 'earth', 'file': 'earth_dragon.png'},
+             'Air': {'score': 180, 'name': 'air', 'file': 'air_dragon.png'},
+             'Water': {'score': 230, 'name': 'water', 'file': 'water_dragon.png'},
+             'Fire': {'score': 280, 'name': 'fire', 'file': 'fire_dragon.png'}}
+my_dragon_list = [{"name": "Earth", "file": 'earth_dragon.png', "image": None, "price": 0, "active": "Y"},
+                  {"name": "Air", "file": 'air_dragon.png', "image": None, "price": 0, "active": "Y"},
+                  {"name": "Fire", "file": 'fire_dragon.png', "image": None, "price": 1000, "active": "N"},
+                  {"name": "Water", "file": 'water_dragon.png', "image": None, "price": 0, "active": "Y"}
+                  ]
+
+>>>>>>> 75fe536 (up)
 
 def load_image(name, color_key=None):
     fullname = os.path.join('images', name)
@@ -34,7 +60,11 @@ class SimpleScene:
         y = 80
         if text:
             if SimpleScene.FONT is None:
+<<<<<<< HEAD
                 SimpleScene.FONT = pygame.freetype.SysFont('arial.ttf', 32)
+=======
+                SimpleScene.FONT = pygame.freetype.SysFont(None, 32)
+>>>>>>> 75fe536 (up)
             i = 0
             for line in text:
                 i += 1
@@ -52,10 +82,72 @@ class SimpleScene:
 
     def start(self, text):
         self.additional_text = text
+<<<<<<< HEAD
         # image_d = pygame.image.load('picture_dragons.jpg')
         # image_d.convert(SimpleScene)
+=======
+        image_d = pygame.image.load('picture_dragons.jpg')
+        # image_d.convert(SimpleScene)
 
-    def draw(self, screen):
+    def draw(self):
+        screen.blit(self.background, (0, 0))
+        # if self.additional_text:
+        #    print("additional_text")
+        #    y = 180
+        #    for line in self.additional_text:
+        #        SimpleScene.FONT.render_to(screen, (120, y), line, pygame.Color('black'))
+        #        SimpleScene.FONT.render_to(screen, (119, y - 1), line, pygame.Color('white'))
+        #        y += 10
+
+    def update(self, events, dt):
+        for event in events:
+            if event.type == pygame.KEYDOWN:
+                if self.next_scene == 'GAME':
+                    return 'GAME', GameState(0)
+                return self.next_scene, None
+
+
+##########
+class FinalScene:
+    FONT = None
+
+    def __init__(self, next_scene, *text):
+        self.background = pygame.Surface((650, 480))
+        self.background.fill(pygame.Color('lightgreen'))
+        fon = pygame.transform.scale(load_image('bg.jfif'), (650, 480))
+        self.background.blit(fon, (0, 0))
+        y = 80
+        if text:
+            if FinalScene.FONT is None:
+                FinalScene.FONT = pygame.freetype.SysFont(None, 32)
+            i = 0
+            for line in text:
+                i += 1
+                text_rect = FinalScene.FONT.get_rect(line)
+                text_rect.center = self.background.get_rect().center
+                text_rect = (text_rect[0], text_rect[1] - 140 * i, text_rect[2], text_rect[3])
+                print("FinalScene:", text_rect)
+                print("FinalScene:", line)
+                FinalScene.FONT.render_to(self.background, text_rect, line, pygame.Color('white'))
+                y += 50
+
+        self.next_scene = next_scene
+        self.additional_text = None
+
+    def start(self, text):
+        self.additional_text = text
+        self.draw()
+        flag = True
+        while flag:
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    flag = False
+                    break
+            pygame.display.flip()
+        dragon_fight.main(random.randint(1, 3), dragon_id)
+>>>>>>> 75fe536 (up)
+
+    def draw(self):
         screen.blit(self.background, (0, 0))
         if self.additional_text:
             y = 180
@@ -73,6 +165,11 @@ class SimpleScene:
 
 
 class GameState:
+<<<<<<< HEAD
+=======
+    DRAGON = 'Air'
+
+>>>>>>> 75fe536 (up)
     def __init__(self, difficulty):
         self.difficulty = difficulty
         self.questions = [
@@ -104,7 +201,16 @@ class GameState:
         self.right += 1
 
     def get_result(self):
+<<<<<<< HEAD
         return '', '', '', f'           You have {self.right} points', '', '    Lets begin our jorney!'
+=======
+        global dragon_id
+        dragon = self.get_dragon()
+        dragon_id = {'Air': 1, 'Earth': 2, 'Fire': 3, 'Water': 4}[dragon]
+        print(dragon)
+        # if dragon == 'Water dragon':
+        return f'{dragon} dragon', '', f'You have {self.right} points', '', 'Press any key to start!'
+>>>>>>> 75fe536 (up)
 
 
 class SettingScene:
@@ -150,10 +256,14 @@ class GameScene:
     def __init__(self):
         print(SimpleScene.FONT)
         # if SimpleScene.FONT == None:
+<<<<<<< HEAD
         SimpleScene.FONT = pygame.freetype.SysFont('arial.ttf', 28)
         self.background = None
         self.gamestate = None
         # Важное место! Устонавливаем размеры боксов
+=======
+        SimpleScene.FONT = pygame.freetype.SysFont(None, 28)
+>>>>>>> 75fe536 (up)
         self.rects = []
         x = 20
         y = 120
@@ -177,7 +287,7 @@ class GameScene:
             SimpleScene.FONT.render_to(self.background, (x, y), answer[i], pygame.Color('white'))
             y += 80
 
-    def draw(self, screen):
+    def draw(self):
         screen.blit(self.background, (0, 0))
         n = 1
         for rect in self.rects:
@@ -197,13 +307,14 @@ class GameScene:
                             return 'GAME', self.gamestate
                         else:
                             return 'RESULT', self.gamestate.get_result()
+<<<<<<< HEAD
                     n += 1
+=======
+>>>>>>> 75fe536 (up)
 
 
 def main():
-    pygame.init()
-    screen = pygame.display.set_mode((640, 480))
-    clock = pygame.time.Clock()
+    global dragon_id
     dt = 0
     scenes = {
         'TITLE': SimpleScene('GAME', '', '', '', '', '', '', 'Welcome to the Dragon Land!', '',
@@ -225,9 +336,15 @@ def main():
             if next_scene:
                 scene = scenes[next_scene]
                 scene.start(state)
+                if isinstance(scene, FinalScene):
+                    return None
 
+<<<<<<< HEAD
         scene.draw(screen)
 
+=======
+        scene.draw()
+>>>>>>> 75fe536 (up)
         pygame.display.flip()
         dt = clock.tick(60)
 
