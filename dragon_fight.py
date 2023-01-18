@@ -8,9 +8,7 @@ SPEED = 5
 pg.init()
 pg.display.set_caption('Dragon Power')
 pg.key.set_repeat(1, 1)
-<<<<<<< HEAD
 sc = pg.display.set_mode((800, 450))
-=======
 screen_width = 640
 screen_height = 480
 sc = pg.display.set_mode((screen_width, screen_height))
