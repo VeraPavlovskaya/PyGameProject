@@ -24,6 +24,20 @@ def load_image(name, color_key=None):
 events = []
 rects = []
 
+def draw_levels():
+    for i in range(len(levels)):
+        img_w = levels[i]["image"].get_rect().width
+        img_h = levels[i]["image"].get_rect().height
+        choose_level_area.blit(levels[i]["image"], (winter_x + i * 120, winter_y))
+        pygame.draw.rect(choose_level_area, (255, 255, 255),
+                         (winter_x + i * 120, winter_y, img_w, img_h), 3)
+        if i == ACTIVE_LEVEL:
+            print('Init ACTIVE_LEVEL:', i)
+    pygame.draw.rect(choose_level_area, (0, 0, 255),
+                     (winter_x + ACTIVE_LEVEL * 120, winter_y, img_w, img_h), 3)
+    screen.blit(choose_level_area, (AREA_LEFT, AREA_TOP))
+
+
 if __name__ == '__main__':
 
     Dragon_Quiz.main()
@@ -57,6 +71,14 @@ if __name__ == '__main__':
         winter_level = pygame.transform.scale(load_image('winter_level.png'), (80, 80))
         summer_level = pygame.transform.scale(load_image('summer_level.jpg'), (80, 80))
         sea_level = pygame.transform.scale(load_image('Sea_level.png'), (80, 80))
+
+        levels = [{"id": 0, "name": "winter", "image": winter_level},
+                  {"id": 1, "name": "summer", "image": summer_level},
+                  {"id": 2, "name": "sea", "image": sea_level}]
+        ACTIVE_LEVEL = 0
+        inLevel = False
+
+        CURRENT_COINS = 0
         ### my_dragon_pic = pygame.transform.scale(load_image(filename), (50, 50))
 
         font1 = pygame.font.SysFont('freesanbold.ttf', 30)
@@ -128,6 +150,11 @@ if __name__ == '__main__':
             screen.blit(text2, textRect2)
             screen.blit(play_btn, (play_btn_x, play_btn_y))
             #
+            coins_text = font1.render(str(CURRENT_COINS), True, (0, 0, 0))
+            coins_rect = coins_text.get_rect()
+            coins_rect.center = (334 + coin.get_rect().width//2, 12 + coin.get_rect().height//2)
+            screen.blit(coins_text, coins_rect)
+            #
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
@@ -142,15 +169,19 @@ if __name__ == '__main__':
                         # Print title on store area
                         title = font1.render('My Dragons:', True, (230, 0, 0))
                         title_height = title.get_rect().height
-                        store_area.blit(title, (width // 2 - AREA_WIDTH // 2, 5))
+                        title_width = title.get_rect().width
+                        store_area.blit(title, ((AREA_WIDTH - title_width) // 2, 5))
                         # Print dragon image on store area
                         for i in range(len(Dragon_Quiz.my_dragon_list)):
                             file_name = Dragon_Quiz.my_dragon_list[i]
                             img = pygame.transform.scale(load_image(file_name), (IMG_WIDTH, IMG_HEIGHT))
-                            store_area.blit(img, (AREA_LEFT - AREA_LEFT // 2 + i * 80, AREA_TOP - title_height))
+                            img_height = img.get_rect().height
+                            store_area.blit(img, (AREA_LEFT - AREA_LEFT // 2 + i * 80, (AREA_HEIGHT - img_height)//2))
 
                         # Blit store area on main screen
                         screen.blit(store_area, (AREA_LEFT, AREA_TOP))
+                        inLevel = False
+
                     if profie.get_rect().collidepoint(x - profile_x, y - profile_y):
 
                         file_name = Dragon_Quiz.my_dragon[GameState.DRAGON]['file']
@@ -160,8 +191,9 @@ if __name__ == '__main__':
                         title = font1.render('Player1', True, (110, 52, 1))
                         title_height = title.get_rect().height
                         profile_area.blit(title, (5, IMG_HEIGHT + 15))
-
                         screen.blit(profile_area, (AREA_LEFT, AREA_TOP))
+                        inLevel = False
+
                     if instructions.get_rect().collidepoint(x - instructions_x, y - instructions_y):
                         black = (0, 0, 0)
                         with open('instructions.txt', 'r', encoding='utf-8') as using_file:
@@ -172,23 +204,25 @@ if __name__ == '__main__':
                             instructions_area.blit(text, (5, 5 + text.get_rect().height*i))
                             i += 1
                         screen.blit(instructions_area, (AREA_LEFT, AREA_TOP))
+                        inLevel = False
 
                     if choose_level.get_rect().collidepoint(x - choose_level_x, y - choose_level_y):
-                        title = font1.render('Select level to continue', True, (110, 52, 1))
+                        title = font1.render('Select level to continue:', True, (230, 0, 0))
                         title_height = title.get_rect().height
-                        choose_level_area.blit(title, (5, 5))
-                        choose_level_area.blit(winter_level, (winter_x, winter_y))
-                        choose_level_area.blit(summer_level, (winter_x + 120, winter_y))
-                        choose_level_area.blit(sea_level, (winter_x + 240, 30))
-                        print(choose_level_x - winter_x, choose_level_y - winter_y)
-
-                        if winter_level.get_rect().collidepoint(AREA_WIDTH - winter_x, AREA_TOP - winter_y):
-                            ###
-                            print('bliting')
-                        screen.blit(choose_level_area, (AREA_LEFT, AREA_TOP))
+                        title_width = title.get_rect().width
+                        choose_level_area.blit(title, ((AREA_WIDTH - title_width)//2, 5))
+                        draw_levels()
+                        inLevel = True
+                    else:
+                        if inLevel:
+                            for i in range(len(levels)):
+                                if levels[i]["image"].get_rect().collidepoint(x - AREA_LEFT - (winter_x + i * 120), y - AREA_TOP - winter_y):
+                                    ACTIVE_LEVEL = i
+                            draw_levels()
                     if play_btn.get_rect().collidepoint(x - play_btn_x, y - play_btn_y):
                         dragonfight.main(1)
                     if quit_btn.get_rect().collidepoint(x - quit_btn_x, y - quit_btn_y):
+                        inLevel = False
                         run = False
             #
             clock.tick(fps)
