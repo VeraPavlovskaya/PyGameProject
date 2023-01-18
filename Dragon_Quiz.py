@@ -6,11 +6,11 @@ import sys
 
 questions = []
 
-my_dragon = {'Earth': {'score': 130, 'name': 'earth', 'file': 'Earth_Dragon2.jpg'},
-             'Air': {'score': 180, 'name': 'air', 'file': 'Air_Dragon.jpg'},
+my_dragon = {'Earth': {'score': 130, 'name': 'earth', 'file': 'earth_Dragon.png'},
+             'Air': {'score': 180, 'name': 'air', 'file': 'air_Dragon.png'},
              'Water': {'score': 230, 'name': 'water', 'file': 'Water_dragon.png'},
-             'Fire': {'score': 280, 'name': 'fire', 'file': 'Fire_Dragon.jpg'}}
-my_dragon_list = ['Earth_Dragon2.jpg', 'Air_Dragon.jpg', 'Water_dragon.png', 'Fire_Dragon.jpg']
+             'Fire': {'score': 280, 'name': 'fire', 'file': 'fire_Dragon.png'}}
+my_dragon_list = ['earth_Dragon.png', 'air_Dragon.png', 'Water_dragon.png', 'fire_Dragon.png']
 
 def load_image(name, color_key=None):
     fullname = os.path.join('images', name)
