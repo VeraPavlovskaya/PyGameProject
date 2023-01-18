@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # В питоне файлы именуются как функции, маленькими латинскими буквами через нижнее подчёркивание!
 import pygame
 import random
@@ -21,6 +22,21 @@ dragon_id = 0
 
 questions = []
 
+=======
+import os
+import random
+import sys
+import pygame
+import dragon_fight
+
+pygame.init()
+screen = pygame.display.set_mode((640, 480))
+clock = pygame.time.Clock()
+dragon_id = 0
+
+questions = []
+
+>>>>>>> 75fe536 (up)
 my_dragon = {'Earth': {'score': 130, 'name': 'earth', 'file': 'earth_dragon.png'},
              'Air': {'score': 180, 'name': 'air', 'file': 'air_dragon.png'},
              'Water': {'score': 230, 'name': 'water', 'file': 'water_dragon.png'},
@@ -61,8 +77,11 @@ class SimpleScene:
         if text:
             if SimpleScene.FONT is None:
 <<<<<<< HEAD
+<<<<<<< HEAD
                 SimpleScene.FONT = pygame.freetype.SysFont('arial.ttf', 32)
 =======
+=======
+>>>>>>> 75fe536 (up)
                 SimpleScene.FONT = pygame.freetype.SysFont(None, 32)
 >>>>>>> 75fe536 (up)
             i = 0
@@ -145,6 +164,9 @@ class FinalScene:
                     break
             pygame.display.flip()
         dragon_fight.main(random.randint(1, 3), dragon_id)
+<<<<<<< HEAD
+>>>>>>> 75fe536 (up)
+=======
 >>>>>>> 75fe536 (up)
 
     def draw(self):
@@ -169,6 +191,9 @@ class GameState:
 =======
     DRAGON = 'Air'
 
+<<<<<<< HEAD
+>>>>>>> 75fe536 (up)
+=======
 >>>>>>> 75fe536 (up)
     def __init__(self, difficulty):
         self.difficulty = difficulty
@@ -202,8 +227,11 @@ class GameState:
 
     def get_result(self):
 <<<<<<< HEAD
+<<<<<<< HEAD
         return '', '', '', f'           You have {self.right} points', '', '    Lets begin our jorney!'
 =======
+=======
+>>>>>>> 75fe536 (up)
         global dragon_id
         dragon = self.get_dragon()
         dragon_id = {'Air': 1, 'Earth': 2, 'Fire': 3, 'Water': 4}[dragon]
@@ -257,10 +285,14 @@ class GameScene:
         print(SimpleScene.FONT)
         # if SimpleScene.FONT == None:
 <<<<<<< HEAD
+<<<<<<< HEAD
         SimpleScene.FONT = pygame.freetype.SysFont('arial.ttf', 28)
         self.background = None
         self.gamestate = None
         # Важное место! Устонавливаем размеры боксов
+=======
+        SimpleScene.FONT = pygame.freetype.SysFont(None, 28)
+>>>>>>> 75fe536 (up)
 =======
         SimpleScene.FONT = pygame.freetype.SysFont(None, 28)
 >>>>>>> 75fe536 (up)
@@ -308,7 +340,10 @@ class GameScene:
                         else:
                             return 'RESULT', self.gamestate.get_result()
 <<<<<<< HEAD
+<<<<<<< HEAD
                     n += 1
+=======
+>>>>>>> 75fe536 (up)
 =======
 >>>>>>> 75fe536 (up)
 
@@ -340,8 +375,12 @@ def main():
                     return None
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         scene.draw(screen)
 
+=======
+        scene.draw()
+>>>>>>> 75fe536 (up)
 =======
         scene.draw()
 >>>>>>> 75fe536 (up)

@@ -8,7 +8,10 @@ SPEED = 5
 pg.init()
 pg.display.set_caption('Dragon Power')
 pg.key.set_repeat(1, 1)
+<<<<<<< HEAD
 sc = pg.display.set_mode((800, 450))
+=======
+>>>>>>> 75fe536 (up)
 screen_width = 640
 screen_height = 480
 sc = pg.display.set_mode((screen_width, screen_height))
@@ -288,6 +291,37 @@ def endscreen(player1, player2):
                 flag = False
 
 
+def endscreen(player1, player2):
+    if player1.get_hp() == 0 and not (player2.get_hp() == 0):
+        rect = pg.Rect(x, y, width_level, height_level)
+        pg.draw.rect(sc, pg.Color('lightblue'), rect)
+        text_font = pg.font.SysFont('freesanbold.ttf', 45)
+        text1 = text_font.render('Player2 won!', True, (230, 0, 0))
+        text2 = text_font.render('Press any key to go to the main menu', True, (230, 0, 0))
+        text3 = text_font.render('+100 Dragon rings', True, (230, 0, 250))
+
+        # print('Player2 won!')
+    elif player2.get_hp() == 0 and not (player1.get_hp() == 0):
+        rect = pg.Rect(x, y, width_level, height_level)
+        pg.draw.rect(sc, pg.Color('lightblue'), rect)
+        text_font = pg.font.SysFont('freesanbold.ttf', 45)
+        text1 = text_font.render('Player1 won!', True, (0, 0, 250))
+        text2 = text_font.render('Press any key to go to the main menu', True, (0, 0, 250))
+        text3 = text_font.render('+100 Dragon rings', True, (230, 0, 250))
+        # CURRENT_COINS += 50
+    else:
+        raise SystemExit('Ложный вызов функции endscreen')
+    sc.blit(text3, (screen_width // 2 - 140, screen_height - height_level + 80))
+    sc.blit(text2, ((screen_width - width_level) // 2 + 18, screen_height - height_level + 200))
+    sc.blit(text1, (screen_width // 2 - 90, screen_height - height_level - 50))
+    pg.display.flip()
+    flag = True
+    while flag:
+        for event in pg.event.get():
+            if event.type == pg.KEYDOWN:
+                flag = False
+
+
 air_dragon = load_image('air_dragon.png')
 earth_dragon = load_image('earth_dragon.png')
 fire_dragon = load_image('fire_dragon.png')
@@ -296,8 +330,11 @@ fireball = load_image('fireball.png')
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 def main(level_num):
 =======
+=======
+>>>>>>> 75fe536 (up)
 def main(level_num, dragon_id_):
     global dragon_id
     dragon_id = dragon_id_
@@ -332,6 +369,9 @@ def main(level_num, dragon_id_):
     flag = True
     while flag:
         sc.fill((0, 0, 0))
+<<<<<<< HEAD
+>>>>>>> 75fe536 (up)
+=======
 >>>>>>> 75fe536 (up)
         dx1 = dy1 = dx2 = dy2 = 0
         for event in pg.event.get():
@@ -374,9 +414,20 @@ def main(level_num, dragon_id_):
             balls_group.update()
         draw_bar((30, 20), pg.Color('red'), player1.get_hp(), 1)
 <<<<<<< HEAD
+<<<<<<< HEAD
         draw_bar((670, 20), pg.Color('blue'), player2.get_hp(), 2)
         pg.display.flip()
         clock.tick(FPS)
+=======
+        draw_bar((510, 20), pg.Color('blue'), player2.get_hp(), 2)
+        if player1.get_hp() == 0 or player2.get_hp() == 0:
+            break
+        pg.display.flip()
+        clock.tick(FPS)
+    endscreen(player1, player2)
+    player1 = player2 = None
+    return 100
+>>>>>>> 75fe536 (up)
 =======
         draw_bar((510, 20), pg.Color('blue'), player2.get_hp(), 2)
         if player1.get_hp() == 0 or player2.get_hp() == 0:
