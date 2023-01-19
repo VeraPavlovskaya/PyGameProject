@@ -126,7 +126,10 @@ def generate_level(level):
                 Tile('wall', x, y)
     coords1, coords2 = sorted((coords1, coords2), key=lambda tpl: tpl[0])
     player1 = Dragon(dragon_id, *coords1, 'left')
-    player2 = Dragon(random.randint(1, 4), *coords2, 'right')
+    id2 = random.randint(1, 4)
+    while id2 == dragon_id:
+        id2 = random.randint(1, 4)
+    player2 = Dragon(id2, *coords2, 'right')
     player1.set_enemy(player2)
     player2.set_enemy(player1)
     return player1, player2

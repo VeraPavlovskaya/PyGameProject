@@ -343,7 +343,8 @@ if __name__ == '__main__':
                                     ACTIVE_LEVEL = i
                             draw_levels()
                     if play_btn.get_rect().collidepoint(x - play_btn_x, y - play_btn_y):
-                        bonus = dragon_fight.main(ACTIVE_LEVEL + 1, SELECTED_DRAGON + 1)
+                        dragon_id = {0: 2, 1: 1, 2: 3, 3: 4}[SELECTED_DRAGON]
+                        bonus = dragon_fight.main(ACTIVE_LEVEL + 1, dragon_id)
                         screen.blit(fon, (0, 0))
                         if bonus == None:
                              bonus = 100
