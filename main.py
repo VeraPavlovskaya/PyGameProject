@@ -1,8 +1,8 @@
 import os
-import Dragon_Quiz
-from Dragon_Quiz import GameState
+import dragon_quiz
+from dragon_quiz import GameState
 import pygame
-import dragonfight
+import dragon_fight
 
 
 def draw_new_coins():
@@ -46,22 +46,22 @@ rects = []
 def draw_dragon_shop():
     bckgr_rect = pygame.Rect(0, 205, AREA_WIDTH, 25)  # Hide old message
     pygame.draw.rect(store_area, pygame.Color('lightblue'), bckgr_rect)
-    ln = len(Dragon_Quiz.my_dragon_list)
+    ln = len(dragon_quiz.my_dragon_list)
     for i in range(ln):
-        img_file_name = Dragon_Quiz.my_dragon_list[i]["file"]
+        img_file_name = dragon_quiz.my_dragon_list[i]["file"]
         dragon_img = pygame.transform.scale(load_image(img_file_name, -1), (IMG_WIDTH, IMG_HEIGHT))
-        Dragon_Quiz.my_dragon_list[i]["image"] = dragon_img
+        dragon_quiz.my_dragon_list[i]["image"] = dragon_img
         img_height = dragon_img.get_rect().height
         img_width = dragon_img.get_rect().width
         # images evenly distributed horizontally
-        di = (AREA_WIDTH - ln * img_width) // (ln + 1)
-        xi = di + (di + img_width) * i
-        clr = (230, 20, 20) if Dragon_Quiz.my_dragon_list[i]["active"] == "Y" else (128, 128, 128)
-        lbl_name = font2.render(Dragon_Quiz.my_dragon_list[i]["name"], True, clr)
+        di = (AREA_WIDTH - ln*img_width) // (ln + 1)
+        xi = di + (di+img_width)*i
+        clr = (230, 20, 20) if dragon_quiz.my_dragon_list[i]["active"] == "Y" else (128, 128, 128)
+        lbl_name = font2.render(dragon_quiz.my_dragon_list[i]["name"], True, clr)
         name_height = lbl_name.get_rect().height
         name_width = lbl_name.get_rect().width
         # Image and text centered vertically
-        yi = (AREA_HEIGHT - img_height - 30 - 20) // 2
+        yi = (AREA_HEIGHT - img_height - 30 - 20)//2
         xt = xi + (img_width - name_width) // 2
         yt = yi + img_height + 20
         store_area.blit(dragon_img, (xi, yi))
@@ -70,18 +70,18 @@ def draw_dragon_shop():
         pygame.draw.rect(store_area, (255, 255, 255), (xi, yi, img_width, img_height), 3)
         if SELECTED_DRAGON == i:
             pygame.draw.rect(store_area, (0, 0, 255), (xi, yi, img_width, img_height), 3)
-        if Dragon_Quiz.my_dragon_list[i]["active"] == "N":
+        if dragon_quiz.my_dragon_list[i]["active"] == "N":
             grey_rect = pygame.Surface((img_width, img_height), pygame.SRCALPHA)
             grey_rect.fill((192, 192, 192, 128))
             store_area.blit(grey_rect, (xi, yi))
             #
             # Draw Price for inactive Dragons
-            lbl_prc = font2.render("Price: " + str(Dragon_Quiz.my_dragon_list[i]["price"]), True, clr)
+            lbl_prc = font2.render("Price: " + str(dragon_quiz.my_dragon_list[i]["price"]), True, clr)
             prc_height = lbl_prc.get_rect().height
             prc_width = lbl_prc.get_rect().width
             xp = xt + (name_width - prc_width) // 2
             yp = yt + name_height + 5
-            # print("yp=", yp)
+            #print("yp=", yp)
             store_area.blit(lbl_prc, (xp, yp))
 
     screen.blit(store_area, (AREA_LEFT, AREA_TOP))
@@ -103,11 +103,10 @@ def draw_levels():
 
 if __name__ == '__main__':
 
-    Dragon_Quiz.main()
+    dragon_quiz.main()
 
-    # инициализация Pygame:
     try:
-        width, height = 650, 480
+        width, height = 640, 480
     except ValueError:
         print('Неправильный формат ввода')
         exit()
@@ -143,8 +142,8 @@ if __name__ == '__main__':
         inStore = False
         SELECTED_DRAGON = 0
         SELECTED_DRAGON_NAME = GameState.DRAGON
-        for i in range(len(Dragon_Quiz.my_dragon_list)):
-            if Dragon_Quiz.my_dragon_list[i]["name"] == GameState.DRAGON:
+        for i in range(len(dragon_quiz.my_dragon_list)):
+            if dragon_quiz.my_dragon_list[i]["name"] == GameState.DRAGON:
                 SELECTED_DRAGON = i
         CURRENT_COINS = 1500
         ### my_dragon_pic = pygame.transform.scale(load_image(filename), (50, 50))
@@ -224,7 +223,7 @@ if __name__ == '__main__':
             #
             coins_text = font1.render(str(CURRENT_COINS), True, (0, 0, 0))
             coins_rect = coins_text.get_rect()
-            coins_rect.center = (334 + coin.get_rect().width // 2, 12 + coin.get_rect().height // 2)
+            coins_rect.center = (334 + coin.get_rect().width//2, 12 + coin.get_rect().height//2)
             screen.blit(coins_text, coins_rect)
             #
             for event in pygame.event.get():
@@ -243,11 +242,11 @@ if __name__ == '__main__':
                         #
                         activate_btn = pygame.transform.scale(load_image('Activate2.jpg', -1), (90, 40))
                         buy_btn = pygame.transform.scale(load_image('Buy2.jpg', -1), (90, 40))
-                        x_act = AREA_WIDTH // 3 - 90 // 2
-                        y_act = AREA_HEIGHT * 5 // 6 - 40 // 2
+                        x_act = AREA_WIDTH//3 - 90//2
+                        y_act = AREA_HEIGHT*5//6 - 40//2
                         store_area.blit(activate_btn, (x_act, y_act))
-                        x_buy = AREA_WIDTH // 3 * 2 - 90 // 2
-                        y_buy = AREA_HEIGHT * 5 // 6 - 40 // 2
+                        x_buy = AREA_WIDTH//3*2 - 90//2
+                        y_buy = AREA_HEIGHT*5//6 - 40//2
                         store_area.blit(buy_btn, (x_buy, y_buy))
                         # Print dragon image on store area
                         draw_dragon_shop()
@@ -257,9 +256,9 @@ if __name__ == '__main__':
                         if inStore:
                             bckgr_rect = pygame.Rect(0, 35, AREA_WIDTH, 50)  # Hide old message
                             pygame.draw.rect(store_area, pygame.Color('lightblue'), bckgr_rect)
-                            ln = len(Dragon_Quiz.my_dragon_list)
+                            ln = len(dragon_quiz.my_dragon_list)
                             for i in range(ln):
-                                dragon_img = Dragon_Quiz.my_dragon_list[i]["image"]
+                                dragon_img = dragon_quiz.my_dragon_list[i]["image"]
                                 img_h = dragon_img.get_rect().height
                                 img_w = dragon_img.get_rect().width
                                 # images evenly distributed horizontally
@@ -268,13 +267,13 @@ if __name__ == '__main__':
                                 yi = (AREA_HEIGHT - img_h - 30 - 20) // 2
                                 # Clicked on the Dragon
                                 if dragon_img.get_rect().collidepoint(x - AREA_LEFT - xi, y - AREA_TOP - yi):
-                                    # and Dragon_Quiz.my_dragon_list[i]["active"] == 'Y')
+                                    #and Dragon_Quiz.my_dragon_list[i]["active"] == 'Y')
                                     SELECTED_DRAGON = i
-                                    SELECTED_DRAGON_NAME = Dragon_Quiz.my_dragon_list[i]["name"]
+                                    SELECTED_DRAGON_NAME = dragon_quiz.my_dragon_list[i]["name"]
                                     print("SELECTED_DRAGON:", SELECTED_DRAGON)
                                 # Clicked on Activate
                             if (activate_btn.get_rect().collidepoint(x - AREA_LEFT - x_act, y - AREA_TOP - y_act)
-                                    and Dragon_Quiz.my_dragon_list[SELECTED_DRAGON]["active"] == 'Y'):
+                                   and dragon_quiz.my_dragon_list[SELECTED_DRAGON]["active"] == 'Y'):
                                 print("Activate", SELECTED_DRAGON)
                                 msg = font2.render(SELECTED_DRAGON_NAME + ' activated', True, (0, 0, 0))
                                 msg_h = msg.get_rect().height
@@ -282,32 +281,32 @@ if __name__ == '__main__':
                                 store_area.blit(msg, ((AREA_WIDTH - msg_w) // 2, 40))
                                 GameState.DRAGON = SELECTED_DRAGON_NAME
                             if (buy_btn.get_rect().collidepoint(x - AREA_LEFT - x_buy, y - AREA_TOP - y_buy)
-                                    and Dragon_Quiz.my_dragon_list[SELECTED_DRAGON]["active"] == 'N'):
+                                    and dragon_quiz.my_dragon_list[SELECTED_DRAGON]["active"] == 'N'):
                                 print("Buy", SELECTED_DRAGON)
-                                if Dragon_Quiz.my_dragon_list[SELECTED_DRAGON]["price"] <= CURRENT_COINS:
+                                if dragon_quiz.my_dragon_list[SELECTED_DRAGON]["price"] <= CURRENT_COINS:
                                     msg = font2.render(SELECTED_DRAGON_NAME + ' purchased', True, (0, 0, 0))
-                                    Dragon_Quiz.my_dragon_list[SELECTED_DRAGON]["active"] = "Y"
+                                    dragon_quiz.my_dragon_list[SELECTED_DRAGON]["active"] = "Y"
                                     # Hide current coins value
                                     hide_old_coins()
 
                                     # Draw new coins value
-                                    CURRENT_COINS = CURRENT_COINS - Dragon_Quiz.my_dragon_list[SELECTED_DRAGON]["price"]
+                                    CURRENT_COINS = CURRENT_COINS - dragon_quiz.my_dragon_list[SELECTED_DRAGON]["price"]
                                     print(CURRENT_COINS)
                                     draw_new_coins()
                                     ##-----------------------------------------
                                 else:
-                                    msg = font2.render('Not enough coins to buy ' + SELECTED_DRAGON_NAME, True,
-                                                       (0, 0, 0))
+                                    msg = font2.render('Not enough coins to buy ' + SELECTED_DRAGON_NAME, True, (0, 0, 0))
                                 msg_h = msg.get_rect().height
                                 msg_w = msg.get_rect().width
                                 store_area.blit(msg, ((AREA_WIDTH - msg_w) // 2, 40))
                             draw_dragon_shop()
 
                     if profie.get_rect().collidepoint(x - profile_x, y - profile_y):
-                        file_name = Dragon_Quiz.my_dragon[GameState.DRAGON]['file']
+
+                        file_name = dragon_quiz.my_dragon[GameState.DRAGON]['file']
                         img = pygame.transform.scale(load_image(file_name), (IMG_WIDTH, IMG_HEIGHT))
                         profile_area.blit(img, (10, 10))
-                        # profile_area.blit(img, ((AREA_WIDTH-IMG_WIDTH)//2, (AREA_HEIGHT-IMG_HEIGHT)//2))
+                        #profile_area.blit(img, ((AREA_WIDTH-IMG_WIDTH)//2, (AREA_HEIGHT-IMG_HEIGHT)//2))
 
                         title = font1.render('Player1', True, (110, 52, 1))
                         title_height = title.get_rect().height
@@ -323,7 +322,7 @@ if __name__ == '__main__':
                         i = 0
                         for line in lines:
                             text = text_font.render(line.strip(), True, black)
-                            instructions_area.blit(text, (5, 5 + text.get_rect().height * i))
+                            instructions_area.blit(text, (5, 5 + text.get_rect().height*i))
                             i += 1
                         screen.blit(instructions_area, (AREA_LEFT, AREA_TOP))
                         inLevel = False
@@ -333,22 +332,21 @@ if __name__ == '__main__':
                         title = font1.render('Select level to continue:', True, (230, 0, 0))
                         title_height = title.get_rect().height
                         title_width = title.get_rect().width
-                        choose_level_area.blit(title, ((AREA_WIDTH - title_width) // 2, 5))
+                        choose_level_area.blit(title, ((AREA_WIDTH - title_width)//2, 5))
                         draw_levels()
                         inLevel = True
                         inStore = False
                     else:
                         if inLevel:
                             for i in range(len(levels)):
-                                if levels[i]["image"].get_rect().collidepoint(x - AREA_LEFT - (winter_x + i * 120),
-                                                                              y - AREA_TOP - winter_y):
+                                if levels[i]["image"].get_rect().collidepoint(x - AREA_LEFT - (winter_x + i * 120), y - AREA_TOP - winter_y):
                                     ACTIVE_LEVEL = i
                             draw_levels()
                     if play_btn.get_rect().collidepoint(x - play_btn_x, y - play_btn_y):
-                        bonus = dragonfight.main(ACTIVE_LEVEL + 1)
+                        bonus = dragon_fight.main(ACTIVE_LEVEL + 1, SELECTED_DRAGON + 1)
                         screen.blit(fon, (0, 0))
                         if bonus == None:
-                            bonus = 100
+                             bonus = 100
                         CURRENT_COINS += bonus
                     if quit_btn.get_rect().collidepoint(x - quit_btn_x, y - quit_btn_y):
                         inLevel = False
