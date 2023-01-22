@@ -145,7 +145,7 @@ if __name__ == '__main__':
         for i in range(len(dragon_quiz.my_dragon_list)):
             if dragon_quiz.my_dragon_list[i]["name"] == GameState.DRAGON:
                 SELECTED_DRAGON = i
-        CURRENT_COINS = 1500
+        CURRENT_COINS = 500
         ### my_dragon_pic = pygame.transform.scale(load_image(filename), (50, 50))
 
         font1 = pygame.font.SysFont('freesanbold.ttf', 30)
