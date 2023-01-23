@@ -3,6 +3,7 @@ import random
 import sys
 import pygame as pg
 from pygame import mixer
+import time
 
 FPS = 60
 SPEED = 5
@@ -318,6 +319,7 @@ def endscreen(player1, player2):
     while flag:
         for event in pg.event.get():
             if event.type == pg.KEYDOWN:
+                time.sleep(1)
                 flag = False
 
 
